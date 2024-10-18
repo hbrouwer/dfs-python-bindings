@@ -87,7 +87,7 @@ def dfs_sample_models(num_models):
             term_string(_WrappedModels,Models).
             """,
             {"_NumModels": num_models})
-    return re.findall("(model\(.*\))", q["Models"])
+    return re.findall("(model\(\(\[.*?\],\[.*?\]\)\))", q["Models"])
 
 def dfs_sample_models_mt(num_threads, num_models):
     """dfs_sample_models_mt(+NumThreads,+NumModels,-ModelSet) is det.
@@ -119,7 +119,7 @@ def dfs_sample_models_mt(num_threads, num_models):
             """,
             {"_NumThreads": num_threads,
              "_NumModels": num_models})
-    return re.findall("(model\(.*\))", q["Models"])
+    return re.findall("(model\(\(\[.*?\],\[.*?\]\)\))", q["Models"])
 
                 ######################
                 #### vector space ####
