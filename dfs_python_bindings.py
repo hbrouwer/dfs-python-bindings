@@ -15,7 +15,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-#import janus as js
 import janus_swi as js
 import numpy as np
 import re
