@@ -83,7 +83,7 @@ def dfs_sample_models(num_models):
             findall(
                 model(_Model),
                 member(_Model,_Models),
-                _WrappedModels ),
+                _WrappedModels),
             term_string(_WrappedModels,Models).
             """,
             {"_NumModels": num_models})
@@ -114,7 +114,7 @@ def dfs_sample_models_mt(num_threads, num_models):
             findall(
                 model(_Model),
                 member(_Model,_Models),
-                _WrappedModels ),
+                _WrappedModels),
             term_string(_WrappedModels,Models).
             """,
             {"_NumThreads": num_threads,
@@ -182,7 +182,7 @@ def dfs_models_to_matrix(models):
             findall(
                 _Model,
                 member(model(_Model),_ModelsTerm),
-                _Models ),
+                _Models),
             dfs_models_to_matrix(_Models,_Matrix),
             term_string(_Matrix,Matrix).
             """,
@@ -265,7 +265,7 @@ def dfs_vector_from_models(formula, models):
             findall(
                 _Model,
                 member(model(_Model),_ModelsTerm),
-                _Models ),
+                _Models),
             dfs_vector(_FormulaTerm,_Models,_Vector),
             term_string(_Vector,Vector).
             """,
@@ -316,7 +316,7 @@ def dfs_atomic_propositions(models):
             findall(
                 _Model,
                 member(model(_Model),_ModelsTerm),
-                _Models ),
+                _Models),
             dfs_vector_space:atomic_propositions(_Models,_AtomicPropositions),
             term_string(_AtomicPropositions,AtomicPropositions).        
             """,
@@ -339,3 +339,49 @@ def dfs_models_to_numpy(models):
     for atom in atoms:
         model_space[atom] = dfs_vector_from_models(atom, models)
     return model_space
+
+                ###################
+                #### sentences ####
+                ###################
+
+"""<module> Sentence generation
+
+Generation of sentence-semantics (and vice versa) mappings.
+
+"""
+
+def dfs_sentences():
+    """dfs_sentences(-SenSemTuples) is det.
+
+    SenSemTuples is a list of all sentence-semantics mappings generated.
+
+    ---
+
+    Returns:
+        mappings (:obj:`list` of :obj:`tuple` of :obj:`str`)
+            tuples of sentence-semantics mappings
+
+    """
+    q = js.query_once(
+            """
+            findall(
+                mapping(_Sen,[_Sem]),
+                sentence((_Sen,_Sem)),
+                _SPMs),
+            term_string(_SPMs,SPMs).
+            """)
+    return re.findall("mapping\((\[.*?\]),\[(.*?)\]\)", q["SPMs"])
+
+def dfs_mappings_to_vectors(mappings, models):
+    """Compute vectors for sentence-semantics mappings
+
+    Returns:
+        mappings (:obj:`list` of :obj:`tuple` of :obj:`str`/`ndarray`)
+            tuples of sentence-semantics-vector mappings
+
+    """
+    vector_mappings = []
+    for sentence, semantics in mappings:
+        vector = dfs_vector_from_models(semantics, models)
+        vector_mappings.extend([(sentence, semantics, vector)])
+    return vector_mappings
