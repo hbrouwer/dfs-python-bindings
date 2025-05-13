@@ -1,5 +1,5 @@
 # dfs-python-bindings
-Python bindings for Distributional Formal Semantics (DFS) tools
+Python bindings for [Distributional Formal Semantics (DFS)](https://github.com/hbrouwer/dfs-tools) tools
 
 ```
 >>> import dfs_python_bindings as dpb
